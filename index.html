@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{--p:#1f4e8c;--a:#e8a317;--bg:#f3f5f9;--card:#fff;--tx:#1b2430;--mu:#677284;--bd:#e0e5ee}
+*{box-sizing:border-box}
+body{margin:0;font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx)}
+h1,h2,h3{margin:0;font-weight:650}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+.app{display:flex;min-height:100vh}
+.side{width:230px;background:var(--p);color:#fff;padding:18px 12px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
+.brand{display:flex;gap:10px;align-items:center;padding:4px 8px 16px}
+.brand img{width:38px;height:38px;object-fit:contain;background:#fff;border-radius:8px;padding:3px}
+.brand b{display:block;font-size:15px;line-height:1.2}.brand small{opacity:.75;font-size:12px}
+.nav{background:none;border:0;color:#fff;opacity:.82;text-align:left;padding:9px 12px;border-radius:8px}
+.nav:hover{background:rgba(255,255,255,.1)}.nav.on{background:rgba(255,255,255,.2);opacity:1;font-weight:600}
+.me{margin-top:auto;display:flex;gap:10px;align-items:center;padding:8px;border-radius:8px;background:rgba(255,255,255,.1);cursor:pointer;border:0;color:#fff;text-align:left;width:100%}
+.main{flex:1;padding:22px 26px;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.top h2{font-size:22px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:16px}
+.grid{display:grid;gap:14px}.g4{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}.g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.stat b{display:block;font-size:28px;line-height:1.1;margin-top:4px}.stat span{color:var(--mu)}
+.stat{border-left:4px solid var(--c,var(--p))}
+.btn{background:var(--p);color:#fff;border:0;border-radius:8px;padding:8px 14px;font-weight:600}
+.btn.ghost{background:#fff;color:var(--tx);border:1px solid var(--bd)}.btn.red{background:#d64545}.btn.sm{padding:4px 10px;font-size:13px}
+.b{display:inline-block;padding:1px 9px;border-radius:99px;font-size:12px;font-weight:600;color:var(--c);background:color-mix(in srgb,var(--c) 14%,#fff);white-space:nowrap}
+.av{width:28px;height:28px;border-radius:50%;object-fit:cover;background:var(--a);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:none;border:2px solid #fff;vertical-align:middle}
+.avs{display:inline-flex}.avs .av+.av{margin-left:-8px}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-weight:600;color:var(--mu);font-size:13px;padding:8px 10px;border-bottom:1px solid var(--bd);white-space:nowrap}
+td{padding:10px;border-bottom:1px solid var(--bd);vertical-align:middle}
+tr.row{cursor:pointer}tr.row:hover td{background:#f8f9fc}
+.scroll{overflow-x:auto}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+input,select,textarea{border:1px solid var(--bd);border-radius:8px;padding:7px 10px;background:#fff;width:100%}
+.filters input,.filters select{width:auto;min-width:130px}
+label{display:block;font-weight:600;font-size:13px;margin:10px 0 4px}
+.empty{padding:28px;text-align:center;color:var(--mu)}
+.bar{display:flex;align-items:center;gap:10px;margin:7px 0}.bar i{display:block;height:10px;border-radius:5px;background:var(--c)}
+.bar span{width:100px;flex:none}.bar em{font-style:normal;color:var(--mu);width:30px}.bar div{flex:1;background:#eef1f6;border-radius:5px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+.cal>div{background:#fff;min-height:96px;padding:4px;min-width:0}.cal .h{min-height:0;text-align:center;font-weight:600;color:var(--mu);background:#f8f9fc}
+.cal .o{background:#f8f9fc;color:#9aa3b2}.cal .t{background:#fff8e6}
+.chip{display:block;width:100%;text-align:left;border:0;border-left:3px solid var(--c);background:color-mix(in srgb,var(--c) 12%,#fff);border-radius:4px;padding:1px 5px;margin-top:2px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ov{position:fixed;inset:0;background:rgba(20,28,40,.5);display:flex;align-items:flex-start;justify-content:center;padding:4vh 12px;overflow:auto;z-index:20}
+.modal{background:#fff;border-radius:12px;padding:20px;width:100%;max-width:560px}
+.modal h3{margin-bottom:6px;font-size:18px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.acts{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.chk{display:flex;flex-wrap:wrap;gap:6px 14px}.chk label{font-weight:400;margin:0;display:flex;gap:6px;align-items:center}.chk input{width:auto}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1b2430;color:#fff;padding:10px 16px;border-radius:8px;z-index:50}.toast.err{background:#d64545}
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;background:linear-gradient(160deg,var(--p),#10233f)}
+.login .card{width:100%;max-width:380px;padding:28px}
+.login img{max-width:80px;max-height:80px;display:block;margin:0 auto 10px}
+.pv{width:56px;height:56px;border-radius:50%;object-fit:cover}.lg{max-height:56px;max-width:140px}
+.muted{color:var(--mu)}.err{color:#d64545;margin:8px 0 0;min-height:18px}
+@media(max-width:800px){.app{flex-direction:column}.side{width:100%;height:auto;position:static;flex-direction:row;flex-wrap:wrap;align-items:center}.brand{padding:0 8px 0 0}.me{margin:0 0 0 auto;width:auto}.main{padding:14px}.row2{grid-template-columns:1fr}.cal>div{min-height:64px}}
+@media(prefers-reduced-motion:no-preference){.modal{animation:pop .15s ease-out}@keyframes pop{from{transform:translateY(8px);opacity:0}}}
+</style></head>
+<body><div id="app"></div>
+<script>
+const S={token:null,me:null,settings:{},users:[],tasks:[],view:'dashboard',f:{q:'',emp:'',st:'',pr:'',du:'',from:'',to:''},cal:new Date(),tmp:{}};
+try{S.token=sessionStorage.getItem('tm')}catch(e){}
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ST=['Not Started','In Progress','On Hold','Completed'],PR=['Low','Medium','High','Urgent'];
+const PC={Low:'#2e9f6b',Medium:'#3b82c4',High:'#e8890c',Urgent:'#d64545'};
+const SC={'Not Started':'#7a8699','In Progress':'#3b82c4','On Hold':'#e8890c',Completed:'#2e9f6b'};
+const DC={Overdue:'#d64545','Due Today':'#e8890c',Upcoming:'#3b82c4',Completed:'#2e9f6b','No due date':'#7a8699'};
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const today=()=>iso(new Date());
+const due=t=>t.Status==='Completed'?'Completed':!t.DueDate?'No due date':t.DueDate<today()?'Overdue':t.DueDate===today()?'Due Today':'Upcoming';
+const bdg=(l,c)=>`<span class="b" style="--c:${c}">${esc(l)}</span>`;
+const ids=t=>String(t.Assignees||'').split(',').filter(Boolean);
+const user=id=>S.users.find(u=>u.UserID===id);
+const isAdmin=()=>S.me&&S.me.Role==='Admin';
+const mine=t=>ids(t).includes(S.me.UserID);
+const scope=()=>isAdmin()?S.tasks:S.tasks.filter(mine);
+const av=u=>u&&u.Photo?`<img class="av" src="${esc(u.Photo)}" alt="" title="${esc(u.Name)}">`:`<span class="av" title="${esc(u?u.Name:'')}">${esc((u?u.Name:'?').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase())}</span>`;
+const avs=t=>`<span class="avs">${ids(t).map(i=>av(user(i))).join('')}</span>`;
+const names=t=>ids(t).map(i=>(user(i)||{}).Name).filter(Boolean).join(', ')||'Unassigned';
+const CFG={url:'https://qxttjewxyavrkgfjrlia.supabase.co',key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqdGpjYmNod3VtcWNld3JpYXhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5MjM1NzEsImV4cCI6MjEwODQ5OTU3MX0.ZNvi44jmdcC2t32A7m-ufdECaYRW-K9qM4539ZWOC8g'};
+const call=async(a,p)=>{try{const r=await fetch(CFG.url+'/rest/v1/rpc/tm_api',{method:'POST',headers:{apikey:CFG.key,'Content-Type':'application/json'},body:JSON.stringify({p_token:S.token||'',p_action:a,p:p||{}})});const j=await r.json();return r.ok?j:{ok:0,error:j.message||'Request failed. Check your Supabase URL and key.'}}catch(e){return{ok:0,error:'Cannot reach the server. Check your connection.'}}};
+function toast(m,err){const d=document.createElement('div');d.className='toast'+(err?' err':'');d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
+async function run(a,p,msg){const r=await call(a,p);if(!r.ok){toast(r.error,1);if(r.session){S.me=null;render()}return false}if(msg)toast(msg);await load();return true}
+async function load(){const r=await call('bootstrap');if(!r.ok){S.me=null;S.token=null;return render()}Object.assign(S,r.data);theme();render()}
+function theme(){const r=document.documentElement.style;r.setProperty('--p',S.settings.Primary||'#1f4e8c');r.setProperty('--a',S.settings.Accent||'#e8a317');document.title=S.settings.SystemName||'Task Monitor'}
+function modal(h){closeM();const d=document.createElement('div');d.className='ov';d.id='ov';d.innerHTML=`<div class="modal">${h}</div>`;d.addEventListener('mousedown',e=>{if(e.target===d)closeM()});document.body.appendChild(d)}
+function closeM(){const o=$('#ov');if(o)o.remove();S.tmp={}}
+function resize(file,max,type,cb){const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const k=Math.min(1,max/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*k;c.height=i.height*k;const x=c.getContext('2d');if(type==='image/jpeg'){x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height)}x.drawImage(i,0,0,c.width,c.height);cb(c.toDataURL(type,.82))};i.src=r.result};r.readAsDataURL(file)}
+
+/* ---------- login ---------- */
+async function loginView(){
+  if(!S.settings.SystemName){const r=await call('branding');if(r.ok){S.settings=r.data;theme()}}
+  const s=S.settings;
+  $('#app').innerHTML=`<div class="login"><form class="card" data-form="login">${s.Logo?`<img src="${esc(s.Logo)}" alt="">`:''}
+  <h2 style="text-align:center">${esc(s.SystemName||'Task Monitor')}</h2><p class="muted" style="text-align:center;margin:2px 0 14px">${esc(s.Tagline||'')}</p>
+  <label>Username</label><input name="username" autocomplete="username" required autofocus>
+  <label>Password</label><input name="password" type="password" autocomplete="current-password" required>
+  <p class="err" id="lerr"></p><button class="btn" style="width:100%;margin-top:8px">Sign in</button>
+  <p class="muted" style="text-align:center;margin:14px 0 0;font-size:12px">${esc(s.CompanyName||'')}</p></form></div>`;
+}
+
+/* ---------- shell ---------- */
+const NAV=[['dashboard','Dashboard'],['all','All Tasks'],['mine','My Tasks'],['calendar','Calendar'],['reports','Reports'],['users','Users',1],['settings','Settings',1]];
+function render(){
+  if(!S.me)return loginView();
+  const s=S.settings,V={dashboard,all:()=>tasksView(0),mine:()=>tasksView(1),calendar,reports,users,settings}[S.view]||dashboard;
+  $('#app').innerHTML=`<div class="app"><aside class="side"><div class="brand">${s.Logo?`<img src="${esc(s.Logo)}" alt="">`:''}<div><b>${esc(s.SystemName)}</b><small>${esc(s.CompanyName)}</small></div></div>
+  ${NAV.filter(n=>!n[2]||isAdmin()).map(n=>`<button class="nav ${S.view===n[0]?'on':''}" data-go="${n[0]}">${n[1]}</button>`).join('')}
+  <button class="me" data-act="profile">${av(S.me)}<span><b>${esc(S.me.Name)}</b><br><small>${esc(S.me.Role)} &middot; Edit profile</small></span></button>
+  <button class="nav" data-act="logout">Sign out</button></aside><main class="main" id="main">${V()}</main></div>`;
+  if(S.view==='all'||S.view==='mine')$('#tbl').innerHTML=table();
+}
+const head=(t,x)=>`<div class="top"><div><h2>${t}</h2>${S.settings.Tagline&&S.view==='dashboard'?`<span class="muted">${esc(S.settings.Tagline)}</span>`:''}</div><div>${x||''}</div></div>`;
+const newBtn=()=>isAdmin()?`<button class="btn" data-act="newTask">New task</button>`:'';
+
+/* ---------- dashboard ---------- */
+function dashboard(){
+  const T=scope(),n=d=>T.filter(t=>due(t)===d).length,wk=Date.now()-7*864e5;
+  const stat=(l,v,c)=>`<div class="card stat" style="--c:${c}"><span>${l}</span><b>${v}</b></div>`;
+  const up=T.filter(t=>t.Status!=='Completed'&&t.DueDate).sort((a,b)=>a.DueDate<b.DueDate?-1:1).slice(0,6);
+  const nw=T.slice().sort((a,b)=>String(b.Created)<String(a.Created)?-1:1).slice(0,6);
+  const list=a=>a.length?a.map(t=>`<div style="display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid var(--bd);cursor:pointer" data-act="viewTask" data-id="${t.TaskID}"><span>${esc(t.Title)}<br><small class="muted">${esc(t.DueDate||'No due date')} &middot; ${esc(names(t))}</small></span>${bdg(due(t),DC[due(t)])}</div>`).join(''):'<div class="empty">Nothing here yet.</div>';
+  return head(isAdmin()?'Team dashboard':'My dashboard',newBtn())+`<div class="grid g4">
+  ${stat('Total tasks',T.length,'#1f4e8c')}${stat('Active',T.filter(t=>t.Status!=='Completed').length,'#3b82c4')}${stat('Completed',n('Completed'),'#2e9f6b')}
+  ${stat('Overdue',n('Overdue'),'#d64545')}${stat('Due today',n('Due Today'),'#e8890c')}${stat('Upcoming',n('Upcoming'),'#7a8fc4')}
+  ${stat('Added this week',T.filter(t=>new Date(t.Created).getTime()>wk).length,'#8a5cc4')}</div>
+  <div class="grid g2" style="margin-top:14px"><div class="card"><h3>Next deadlines</h3>${list(up)}</div><div class="card"><h3>Newly added</h3>${list(nw)}</div></div>`;
+}
+
+/* ---------- tasks ---------- */
+function filtered(m){
+  const f=S.f,q=f.q.toLowerCase();
+  return (m?S.tasks.filter(mine):S.tasks).filter(t=>(!q||(t.Title+' '+t.Description+' '+names(t)).toLowerCase().includes(q))&&(!f.emp||ids(t).includes(f.emp))&&(!f.st||t.Status===f.st)&&(!f.pr||t.Priority===f.pr)&&(!f.du||due(t)===f.du)&&(!f.from||t.DueDate>=f.from)&&(!f.to||(t.DueDate&&t.DueDate<=f.to)))
+   .sort((a,b)=>(a.DueDate||'9999')<(b.DueDate||'9999')?-1:1);
+}
+const opts=(a,sel,all)=>(all?`<option value="">${all}</option>`:'')+a.map(x=>`<option ${x===sel?'selected':''}>${x}</option>`).join('');
+function tasksView(m){
+  const f=S.f;
+  return head(m?'My tasks':'All tasks',newBtn())+`<div class="card"><div class="filters" data-mine="${m}">
+  <input data-f="q" placeholder="Search tasks" value="${esc(f.q)}">
+  ${m?'':`<select data-f="emp"><option value="">All employees</option>${S.users.map(u=>`<option value="${u.UserID}" ${f.emp===u.UserID?'selected':''}>${esc(u.Name)}</option>`).join('')}</select>`}
+  <select data-f="st">${opts(ST,f.st,'Any status')}</select><select data-f="pr">${opts(PR,f.pr,'Any priority')}</select>
+  <select data-f="du">${opts(Object.keys(DC),f.du,'Any due status')}</select>
+  <input type="date" data-f="from" value="${f.from}" title="Due from"><input type="date" data-f="to" value="${f.to}" title="Due until"></div>
+  <div class="scroll" id="tbl"></div></div>`;
+}
+function table(){
+  const m=S.view==='mine',T=filtered(m);
+  if(!T.length)return '<div class="empty">No tasks match. Adjust the filters'+(isAdmin()?' or create a new task.':'.')+'</div>';
+  return `<table><tr><th>Task</th><th>Assigned to</th><th>Priority</th><th>Status</th><th>Due</th><th>Due status</th></tr>${T.map(t=>`<tr class="row" data-act="viewTask" data-id="${t.TaskID}"><td><b>${esc(t.Title)}</b></td><td>${avs(t)}</td><td>${bdg(t.Priority,PC[t.Priority])}</td><td>${bdg(t.Status,SC[t.Status])}</td><td>${esc(t.DueDate||'-')}</td><td>${bdg(due(t),DC[due(t)])}</td></tr>`).join('')}</table>`;
+}
+function viewTask(id){
+  const t=S.tasks.find(x=>x.TaskID===id);if(!t)return;
+  const can=isAdmin()||mine(t);
+  modal(`<h3>${esc(t.Title)}</h3><p style="white-space:pre-wrap;margin:6px 0 12px">${esc(t.Description)||'<span class="muted">No description.</span>'}</p>
+  <div class="row2"><div><label>Priority</label>${bdg(t.Priority,PC[t.Priority])}</div><div><label>Due status</label>${bdg(due(t),DC[due(t)])}</div>
+  <div><label>Start</label>${esc(t.StartDate||'-')}</div><div><label>Due</label>${esc(t.DueDate||'-')}</div></div>
+  <label>Assigned to</label>${esc(names(t))}
+  <label>Status</label>${can?`<select data-status="${t.TaskID}">${opts(ST,t.Status)}</select>`:bdg(t.Status,SC[t.Status])+' <span class="muted">Only assigned employees can update this.</span>'}
+  <div class="acts">${isAdmin()?`<button class="btn red sm" data-act="delTask" data-id="${id}">Delete</button><button class="btn ghost" data-act="follow" data-id="${id}">Email follow-up</button><button class="btn ghost" data-act="editTask" data-id="${id}">Edit</button>`:''}<button class="btn" data-act="closeM">Close</button></div>`);
+}
+function taskForm(id){
+  const t=S.tasks.find(x=>x.TaskID===id)||{Priority:'Medium',Status:'Not Started'},a=ids(t);
+  modal(`<form data-form="task"><h3>${id?'Edit task':'New task'}</h3><input type="hidden" name="TaskID" value="${esc(t.TaskID||'')}">
+  <label>Title</label><input name="Title" value="${esc(t.Title||'')}" required>
+  <label>Description</label><textarea name="Description" rows="3">${esc(t.Description||'')}</textarea>
+  <div class="row2"><div><label>Priority</label><select name="Priority">${opts(PR,t.Priority)}</select></div><div><label>Status</label><select name="Status">${opts(ST,t.Status)}</select></div>
+  <div><label>Start date</label><input type="date" name="StartDate" value="${t.StartDate||''}"></div><div><label>Due date</label><input type="date" name="DueDate" value="${t.DueDate||''}"></div></div>
+  <label>Assign to</label><div class="chk">${S.users.filter(u=>u.Status==='Active'||a.includes(u.UserID)).map(u=>`<label><input type="checkbox" name="as" value="${u.UserID}" ${a.includes(u.UserID)?'checked':''}>${esc(u.Name)}</label>`).join('')}</div>
+  <div class="acts"><button type="button" class="btn ghost" data-act="closeM">Cancel</button><button class="btn">Save task</button></div></form>`);
+}
+
+/* ---------- calendar ---------- */
+function calendar(){
+  const c=S.cal,y=c.getFullYear(),mo=c.getMonth(),first=new Date(y,mo,1),start=new Date(y,mo,1-first.getDay()),T=scope();
+  let cells=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d=>`<div class="h">${d}</div>`).join('');
+  for(let i=0;i<42;i++){const d=new Date(start.getFullYear(),start.getMonth(),start.getDate()+i),k=iso(d);
+    cells+=`<div class="${d.getMonth()!==mo?'o':''} ${k===today()?'t':''}"><small>${d.getDate()}</small>${T.filter(t=>t.DueDate===k).map(t=>`<button class="chip" style="--c:${PC[t.Priority]}" data-act="viewTask" data-id="${t.TaskID}" title="${esc(t.Title)}">${esc(t.Title)}</button>`).join('')}</div>`}
+  return head('Calendar',`<button class="btn ghost" data-act="calPrev">Previous</button> <b style="margin:0 8px">${c.toLocaleString('default',{month:'long',year:'numeric'})}</b> <button class="btn ghost" data-act="calNext">Next</button> <button class="btn ghost" data-act="calToday">Today</button>`)+
+  `<div class="cal">${cells}</div><p class="muted">Tasks appear on their due date. Colors show priority: ${PR.map(p=>bdg(p,PC[p])).join(' ')}</p>`;
+}
+
+/* ---------- reports ---------- */
+function reports(){
+  const T=scope(),max=Math.max(1,T.length),bar=(l,n,c)=>`<div class="bar"><span>${esc(l)}</span><div><i style="--c:${c};width:${n/max*100}%"></i></div><em>${n}</em></div>`;
+  const done=T.filter(t=>t.Status==='Completed').length,rate=T.length?Math.round(done/T.length*100):0;
+  const emps=(isAdmin()?S.users:[S.me]).map(u=>{const x=T.filter(t=>ids(t).includes(u.UserID)),d=x.filter(t=>t.Status==='Completed').length;return `<tr><td>${av(u)} ${esc(u.Name)}</td><td>${x.length}</td><td>${x.length-d}</td><td>${d}</td><td>${x.filter(t=>due(t)==='Overdue').length}</td><td>${x.length?Math.round(d/x.length*100):0}%</td></tr>`}).join('');
+  return head('Reports and analytics')+`<div class="grid g2"><div class="card"><h3>Overall progress</h3><p style="font-size:30px;margin:6px 0"><b>${rate}%</b> <small class="muted">completed (${done} of ${T.length})</small></p>
+  <div class="bar"><div><i style="--c:#2e9f6b;width:${rate}%"></i></div></div></div>
+  <div class="card"><h3>By status</h3>${ST.map(s=>bar(s,T.filter(t=>t.Status===s).length,SC[s])).join('')}</div>
+  <div class="card"><h3>By priority</h3>${PR.map(p=>bar(p,T.filter(t=>t.Priority===p).length,PC[p])).join('')}</div>
+  <div class="card"><h3>By due status</h3>${Object.keys(DC).map(d=>bar(d,T.filter(t=>due(t)===d).length,DC[d])).join('')}</div></div>
+  <div class="card scroll" style="margin-top:14px"><h3 style="margin-bottom:6px">Employee workload</h3><table><tr><th>Employee</th><th>Assigned</th><th>Active</th><th>Completed</th><th>Overdue</th><th>Completion rate</th></tr>${emps}</table></div>`;
+}
+
+/* ---------- users ---------- */
+function users(){
+  return head('User management',`<button class="btn" data-act="newUser">Add user</button>`)+`<div class="card scroll"><table><tr><th>User</th><th>Username</th><th>Email</th><th>Role</th><th>Status</th><th></th></tr>
+  ${S.users.map(u=>`<tr><td>${av(u)} ${esc(u.Name)}</td><td>${esc(u.Username)}</td><td>${esc(u.Email||'-')}</td><td>${esc(u.Role)}</td><td>${bdg(u.Status,u.Status==='Active'?'#2e9f6b':'#7a8699')}</td>
+  <td style="white-space:nowrap"><button class="btn ghost sm" data-act="editUser" data-id="${u.UserID}">Edit</button> ${u.UserID===S.me.UserID?'':`<button class="btn red sm" data-act="delUser" data-id="${u.UserID}">Delete</button>`}</td></tr>`).join('')}</table></div>`;
+}
+function userForm(id,self){
+  const u=S.users.find(x=>x.UserID===id)||(self?S.me:{Role:'Employee',Status:'Active'});S.tmp.Photo=undefined;
+  modal(`<form data-form="${self?'profile':'user'}"><h3>${self?'My profile':id?'Edit user':'Add user'}</h3><input type="hidden" name="UserID" value="${esc(u.UserID||'')}">
+  <div style="display:flex;gap:12px;align-items:center;margin-top:8px"><span id="pv-Photo">${u.Photo?`<img class="pv" src="${esc(u.Photo)}" alt="">`:av(u)}</span><div><label style="margin:0">Profile photo</label><input type="file" accept="image/*" data-img="Photo" data-max="160" data-type="image/jpeg"></div></div>
+  <div class="row2"><div><label>Full name</label><input name="Name" value="${esc(u.Name||'')}" required></div><div><label>Email</label><input type="email" name="Email" value="${esc(u.Email||'')}"></div>
+  ${self?'':`<div><label>Username</label><input name="Username" value="${esc(u.Username||'')}" required></div>`}
+  <div><label>${id||self?'New password (optional)':'Password'}</label><input type="password" name="Password" autocomplete="new-password" ${id||self?'':'required'}></div>
+  ${self?'':`<div><label>Role</label><select name="Role">${opts(['Employee','Admin'],u.Role)}</select></div><div><label>Account status</label><select name="Status">${opts(['Active','Inactive'],u.Status)}</select></div>`}</div>
+  <div class="acts"><button type="button" class="btn ghost" data-act="closeM">Cancel</button><button class="btn">Save</button></div></form>`);
+}
+
+/* ---------- settings ---------- */
+function settings(){
+  const s=S.settings;S.tmp.Logo=undefined;
+  return head('Company branding')+`<form class="card" data-form="settings" style="max-width:620px"><div class="row2">
+  <div><label>Company name</label><input name="CompanyName" value="${esc(s.CompanyName)}"></div><div><label>System name</label><input name="SystemName" value="${esc(s.SystemName)}"></div></div>
+  <label>Tagline</label><input name="Tagline" value="${esc(s.Tagline)}">
+  <div class="row2"><div><label>Primary color</label><input type="color" name="Primary" value="${esc(s.Primary)}"></div><div><label>Accent color</label><input type="color" name="Accent" value="${esc(s.Accent)}"></div></div>
+  <label>Company logo</label><div style="display:flex;gap:12px;align-items:center"><span id="pv-Logo">${s.Logo?`<img class="lg" src="${esc(s.Logo)}" alt="">`:'<span class="muted">No logo yet</span>'}</span><input type="file" accept="image/*" data-img="Logo" data-max="200" data-type="image/png"></div>
+  <div class="acts"><button class="btn">Save branding</button></div></form>`;
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',async e=>{
+  const g=e.target.closest('[data-go]');if(g){S.view=g.dataset.go;return render()}
+  const b=e.target.closest('[data-act]');if(!b)return;const id=b.dataset.id,a=b.dataset.act;
+  if(a==='closeM')closeM();
+  else if(a==='newTask')taskForm();
+  else if(a==='editTask')taskForm(id);
+  else if(a==='viewTask')viewTask(id);
+  else if(a==='delTask'){if(confirm('Delete this task permanently?')&&await run('deleteTask',{TaskID:id},'Task deleted'))closeM()}
+  else if(a==='follow')modal(`<form data-form="follow"><h3>Email follow-up</h3><p class="muted">Sends to: ${esc(names(S.tasks.find(t=>t.TaskID===id)))}</p><input type="hidden" name="TaskID" value="${id}"><label>Message (optional)</label><textarea name="Message" rows="4" placeholder="Please share an update on this task."></textarea><div class="acts"><button type="button" class="btn ghost" data-act="closeM">Cancel</button><button class="btn">Send email</button></div></form>`);
+  else if(a==='newUser')userForm();
+  else if(a==='editUser')userForm(id);
+  else if(a==='profile')userForm(S.me.UserID,1);
+  else if(a==='delUser'){if(confirm('Delete this user? They will be removed from all tasks.'))await run('deleteUser',{UserID:id},'User deleted')}
+  else if(a==='calPrev'){S.cal=new Date(S.cal.getFullYear(),S.cal.getMonth()-1,1);render()}
+  else if(a==='calNext'){S.cal=new Date(S.cal.getFullYear(),S.cal.getMonth()+1,1);render()}
+  else if(a==='calToday'){S.cal=new Date();render()}
+  else if(a==='logout'){await call('logout');try{sessionStorage.removeItem('tm')}catch(x){}S.me=null;S.token=null;render()}
+});
+document.addEventListener('input',e=>{const k=e.target.dataset.f;if(!k)return;S.f[k]=e.target.value;$('#tbl').innerHTML=table()});
+document.addEventListener('change',async e=>{
+  const t=e.target;
+  if(t.dataset.f){S.f[t.dataset.f]=t.value;$('#tbl').innerHTML=table()}
+  if(t.dataset.status){const ok=await run('setStatus',{TaskID:t.dataset.status,Status:t.value},'Status updated');if(ok)viewTask(t.dataset.status)}
+  if(t.dataset.img&&t.files[0]){const k=t.dataset.img;resize(t.files[0],+t.dataset.max,t.dataset.type,u=>{S.tmp[k]=u;$('#pv-'+k).innerHTML=`<img class="${k==='Logo'?'lg':'pv'}" src="${u}" alt="">`})}
+});
+document.addEventListener('submit',async e=>{
+  e.preventDefault();const f=e.target,k=f.dataset.form,d=Object.fromEntries(new FormData(f));
+  if(k==='login'){const r=await call('login',d);if(!r.ok){$('#lerr').textContent=r.error;return}S.token=r.data.token;try{sessionStorage.setItem('tm',S.token)}catch(x){}return load()}
+  if(k==='task'){d.Assignees=new FormData(f).getAll('as');if(await run('saveTask',d,'Task saved'))closeM()}
+  if(k==='user'||k==='profile'){if(S.tmp.Photo!==undefined)d.Photo=S.tmp.Photo;if(await run(k==='user'?'saveUser':'saveProfile',d,'Saved'))closeM()}
+  if(k==='settings'){if(S.tmp.Logo!==undefined)d.Logo=S.tmp.Logo;await run('saveSettings',d,'Branding saved')}
+  if(k==='follow'){let j;try{j=await (await fetch(CFG.url+'/functions/v1/tm-followup',{method:'POST',headers:{apikey:CFG.key,'Content-Type':'application/json'},body:JSON.stringify({token:S.token,taskId:d.TaskID,message:d.Message})})).json()}catch(x){j={ok:0,error:'Email service is not set up yet.'}}
+    if(j.ok){toast('Follow-up sent to '+j.sent+' recipient(s)');closeM()}else{toast(j.error||'Email service is not set up yet.',1);const t=S.tasks.find(x=>x.TaskID===d.TaskID),to=ids(t).map(i=>(user(i)||{}).Email).filter(Boolean).join(',');if(to)window.open('mailto:'+to+'?subject='+encodeURIComponent('Follow-up: '+t.Title)+'&body='+encodeURIComponent(d.Message||''))}}
+});
+S.token?load():render();
+</script></body></html>
