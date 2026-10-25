@@ -82,7 +82,7 @@ const scope=()=>isAdmin()?S.tasks:S.tasks.filter(mine);
 const av=u=>u&&u.Photo?`<img class="av" src="${esc(u.Photo)}" alt="" title="${esc(u.Name)}">`:`<span class="av" title="${esc(u?u.Name:'')}">${esc((u?u.Name:'?').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase())}</span>`;
 const avs=t=>`<span class="avs">${ids(t).map(i=>av(user(i))).join('')}</span>`;
 const names=t=>ids(t).map(i=>(user(i)||{}).Name).filter(Boolean).join(', ')||'Unassigned';
-const CFG={url:'https://qxttjewxyavrkgfjrlia.supabase.co',key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqdGpjYmNod3VtcWNld3JpYXhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5MjM1NzEsImV4cCI6MjEwODQ5OTU3MX0.ZNvi44jmdcC2t32A7m-ufdECaYRW-K9qM4539ZWOC8g'};
+const CFG={url:'https://vjtjcbchwumqcewriaxc.supabase.co',key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqdGpjYmNod3VtcWNld3JpYXhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5MjM1NzEsImV4cCI6MjEwODQ5OTU3MX0.ZNvi44jmdcC2t32A7m-ufdECaYRW-K9qM4539ZWOC8g'};
 const call=async(a,p)=>{try{const r=await fetch(CFG.url+'/rest/v1/rpc/tm_api',{method:'POST',headers:{apikey:CFG.key,'Content-Type':'application/json'},body:JSON.stringify({p_token:S.token||'',p_action:a,p:p||{}})});const j=await r.json();return r.ok?j:{ok:0,error:j.message||'Request failed. Check your Supabase URL and key.'}}catch(e){return{ok:0,error:'Cannot reach the server. Check your connection.'}}};
 function toast(m,err){const d=document.createElement('div');d.className='toast'+(err?' err':'');d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
 async function run(a,p,msg){const r=await call(a,p);if(!r.ok){toast(r.error,1);if(r.session){S.me=null;render()}return false}if(msg)toast(msg);await load();return true}
